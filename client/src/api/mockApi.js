@@ -10,7 +10,7 @@
 
 import seed from './seed.json'
 
-const KEY = 'final-project:sightings'
+const KEY = 'final-project:games'
 
 // A real network is not instant. Keeping this delay is what forces you to build
 // a loading state now, while it is cheap, instead of discovering you need one
@@ -36,30 +36,31 @@ function write(rows) {
   return rows
 }
 
-export async function listSightings() {
+export async function listGames() {
   await delay()
-  return read().slice().sort((a, b) => b.reported_at.localeCompare(a.reported_at))
+  return read().slice().sort((a, b) => a.title.localeCompare(b.title))
 }
 
-export async function getSighting(id) {
+export async function getGame(id) {
   await delay()
   const found = read().find((row) => String(row.id) === String(id))
   if (!found) throw new Error('Not found')
   return found
 }
 
-export async function createSighting(input) {
+export async function createGame(input) {
   await delay()
   const created = {
     ...input,
     id: crypto.randomUUID(),
-    reported_at: new Date().toISOString(),
+    last_note: input.last_note ?? '',
+    last_played_at: input.last_played_at ?? null,
   }
   write([...read(), created])
   return created
 }
 
-export async function updateSighting(id, input) {
+export async function updateGame(id, input) {
   await delay()
   const rows = read()
   const index = rows.findIndex((row) => String(row.id) === String(id))
@@ -69,7 +70,7 @@ export async function updateSighting(id, input) {
   return rows[index]
 }
 
-export async function deleteSighting(id) {
+export async function deleteGame(id) {
   await delay()
   write(read().filter((row) => String(row.id) !== String(id)))
 }

@@ -26,15 +26,15 @@ async function request(path, options) {
   return response.status === 204 ? null : response.json()
 }
 
-export const listSightings = () => request('/api/sightings')
+export const listGames = () => request('/api/games')
 
-export const getSighting = (id) => request(`/api/sightings/${id}`)
+export const getGame = (id) => request(`/api/games/${id}`)
 
-export const createSighting = (input) =>
-  request('/api/sightings', { method: 'POST', body: JSON.stringify(input) })
+export const createGame = (input) =>
+  request('/api/games', { method: 'POST', body: JSON.stringify(input) })
 
-export const updateSighting = (id, input) =>
-  request(`/api/sightings/${id}`, { method: 'PUT', body: JSON.stringify(input) })
+export const updateGame = (id, input) =>
+  request(`/api/games/${id}`, { method: 'PUT', body: JSON.stringify(input) })
 
-export const deleteSighting = (id) =>
-  request(`/api/sightings/${id}`, { method: 'DELETE' })
+export const deleteGame = (id) =>
+  request(`/api/games/${id}`, { method: 'DELETE' })

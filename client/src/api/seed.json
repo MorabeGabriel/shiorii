@@ -1,8 +1,8 @@
 [
-  { "id": "seed-1", "place": "Library, third floor", "description": "Chairs rearranged overnight, every time. The night guard says he locks the room himself.", "spookiness": 3, "reported_at": "2026-08-01T14:20:00.000Z" },
-  { "id": "seed-2", "place": "Old gym", "description": "Lights flicker in a fixed pattern after 9pm, always three short and one long.", "spookiness": 4, "reported_at": "2026-08-03T11:05:00.000Z" },
-  { "id": "seed-3", "place": "Parking basement", "description": "Footsteps with no one there. Reported separately by three different people in one week, which is what makes this one hard to dismiss. Two of them were alone at the time and did not know about the others. This entry is deliberately long, because a seed row of four words hides every text-wrapping bug you have.", "spookiness": 5, "reported_at": "2026-08-05T22:40:00.000Z" },
-  { "id": "seed-4", "place": "Canteen", "description": "A cold spot near the back door, every morning before seven.", "spookiness": 1, "reported_at": "2026-08-06T07:15:00.000Z" },
-  { "id": "seed-5", "place": "AB Building stairwell", "description": "", "spookiness": 2, "reported_at": "2026-08-08T18:30:00.000Z" },
-  { "id": "seed-6", "place": "Chapel garden", "description": "Someone humming. Stops the moment you turn around.", "spookiness": 3, "reported_at": "2026-08-10T05:50:00.000Z" }
+  { "id": "seed-1", "title": "Elden Ring", "platform": "PC", "status": "playing", "last_note": "Left off at the boss fight, floor 3.", "last_played_at": "2026-09-20T20:00:00.000Z" },
+  { "id": "seed-2", "title": "Hollow Knight", "platform": "Switch", "status": "backlog", "last_note": "", "last_played_at": null },
+  { "id": "seed-3", "title": "Baldur's Gate 3", "platform": "PC", "status": "completed", "last_note": "Finished the main story.", "last_played_at": "2026-08-14T18:30:00.000Z" },
+  { "id": "seed-4", "title": "Starfield", "platform": "PC", "status": "dropped", "last_note": "Lost interest after the first few main quests.", "last_played_at": "2026-05-02T09:00:00.000Z" },
+  { "id": "seed-5", "title": "Persona 5 Royal", "platform": "PS5", "status": "backlog", "last_note": "", "last_played_at": null },
+  { "id": "seed-6", "title": "Hades", "platform": "Switch", "status": "playing", "last_note": "Grinding for the last few mirror upgrades.", "last_played_at": "2026-09-25T21:15:00.000Z" }
 ]
