@@ -6,15 +6,18 @@
 -- rather than by connecting to a server. It is also what lets you move to a
 -- hosted database in one command.
 
-CREATE TABLE IF NOT EXISTS sightings (
-  id          SERIAL PRIMARY KEY,
-  place       TEXT        NOT NULL,
-  description TEXT        NOT NULL DEFAULT '',
-  spookiness  INTEGER     NOT NULL CHECK (spookiness BETWEEN 1 AND 5),
-  reported_at TIMESTAMPTZ NOT NULL DEFAULT now()
+CREATE TABLE IF NOT EXISTS games (
+  id              SERIAL PRIMARY KEY,
+  title           TEXT        NOT NULL,
+  platform        TEXT        NOT NULL DEFAULT '',
+  status          TEXT        NOT NULL DEFAULT 'backlog'
+                    CHECK (status IN ('backlog', 'playing', 'completed', 'dropped')),
+  last_note       TEXT        NOT NULL DEFAULT '',
+  last_played_at  TIMESTAMPTZ,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- The list page always sorts newest first. Without this the database reads
--- every row and sorts it on each request.
-CREATE INDEX IF NOT EXISTS sightings_reported_at_idx
-  ON sightings (reported_at DESC);
+-- The Library screen always sorts alphabetically by title. Without this the
+-- database reads every row and sorts it on each request.
+CREATE INDEX IF NOT EXISTS games_title_idx
+  ON games (title);

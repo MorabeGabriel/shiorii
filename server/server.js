@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import { pool } from './db/pool.js'
-import * as sightings from './sightingsRepo.js'
+import * as games from './gamesRepo.js'
 
 const app = express()
 
@@ -36,36 +36,40 @@ app.get('/readyz', async (request, response) => {
   }
 })
 
+const VALID_STATUSES = ['backlog', 'playing', 'completed', 'dropped']
+
 // Validation lives on the server because the client can be bypassed. The
 // browser form is for a fast, friendly message; this is for correctness.
 function validate(body) {
   const errors = []
-  const place = typeof body.place === 'string' ? body.place.trim() : ''
-  const description =
-    typeof body.description === 'string' ? body.description.trim() : ''
-  const spookiness = Number(body.spookiness)
+  const title = typeof body.title === 'string' ? body.title.trim() : ''
+  const platform = typeof body.platform === 'string' ? body.platform.trim() : ''
+  const status = typeof body.status === 'string' ? body.status.trim() : 'backlog'
+  const last_note = typeof body.last_note === 'string' ? body.last_note.trim() : ''
+  const last_played_at = body.last_played_at ?? null
 
-  if (!place) errors.push('place is required')
-  if (place.length > 120) errors.push('place must be 120 characters or fewer')
-  if (description.length > 2000) errors.push('description must be 2000 characters or fewer')
-  if (!Number.isInteger(spookiness) || spookiness < 1 || spookiness > 5) {
-    errors.push('spookiness must be a whole number from 1 to 5')
+  if (!title) errors.push('title is required')
+  if (title.length > 120) errors.push('title must be 120 characters or fewer')
+  if (platform.length > 60) errors.push('platform must be 60 characters or fewer')
+  if (!VALID_STATUSES.includes(status)) {
+    errors.push(`status must be one of: ${VALID_STATUSES.join(', ')}`)
   }
+  if (last_note.length > 500) errors.push('last_note must be 500 characters or fewer')
 
-  return { errors, value: { place, description, spookiness } }
+  return { errors, value: { title, platform, status, last_note, last_played_at } }
 }
 
-app.get('/api/sightings', async (request, response, next) => {
+app.get('/api/games', async (request, response, next) => {
   try {
-    response.json(await sightings.getAll(pool))
+    response.json(await games.getAll(pool))
   } catch (error) {
     next(error)
   }
 })
 
-app.get('/api/sightings/:id', async (request, response, next) => {
+app.get('/api/games/:id', async (request, response, next) => {
   try {
-    const row = await sightings.getById(pool, request.params.id)
+    const row = await games.getById(pool, request.params.id)
     if (!row) return response.status(404).json({ error: 'Not found' })
     response.json(row)
   } catch (error) {
@@ -73,23 +77,23 @@ app.get('/api/sightings/:id', async (request, response, next) => {
   }
 })
 
-app.post('/api/sightings', async (request, response, next) => {
+app.post('/api/games', async (request, response, next) => {
   const { errors, value } = validate(request.body ?? {})
   if (errors.length > 0) return response.status(400).json({ error: errors.join('; ') })
 
   try {
-    response.status(201).json(await sightings.create(pool, value))
+    response.status(201).json(await games.create(pool, value))
   } catch (error) {
     next(error)
   }
 })
 
-app.put('/api/sightings/:id', async (request, response, next) => {
+app.put('/api/games/:id', async (request, response, next) => {
   const { errors, value } = validate(request.body ?? {})
   if (errors.length > 0) return response.status(400).json({ error: errors.join('; ') })
 
   try {
-    const row = await sightings.update(pool, request.params.id, value)
+    const row = await games.update(pool, request.params.id, value)
     if (!row) return response.status(404).json({ error: 'Not found' })
     response.json(row)
   } catch (error) {
@@ -97,9 +101,9 @@ app.put('/api/sightings/:id', async (request, response, next) => {
   }
 })
 
-app.delete('/api/sightings/:id', async (request, response, next) => {
+app.delete('/api/games/:id', async (request, response, next) => {
   try {
-    const removed = await sightings.remove(pool, request.params.id)
+    const removed = await games.remove(pool, request.params.id)
     if (!removed) return response.status(404).json({ error: 'Not found' })
     response.status(204).end()
   } catch (error) {
