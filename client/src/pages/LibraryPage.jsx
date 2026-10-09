@@ -7,7 +7,7 @@ import { listGames, createGame, deleteGame } from "../api";
 
 const EMPTY_FORM = { title: "", platform: "", status: "backlog" };
 
-export default function LibraryPage() {
+export default function LibraryPage({ onSelectGame }) {
   const [status, setStatus] = useState("loading"); // loading | ready | error
   const [games, setGames] = useState([]);
   const [error, setError] = useState(null);
@@ -61,11 +61,6 @@ export default function LibraryPage() {
       setGames(previous); // put it back on failure
       setError(caught);
     }
-  }
-
-  function handleSelectGame(id) {
-    // Wired up once the Game Detail screen exists.
-    console.log("selected game", id);
   }
 
   return (
@@ -127,7 +122,7 @@ export default function LibraryPage() {
       {status === "loading" && <p className="text-textDim text-small">Loading your library…</p>}
 
       {status === "ready" && (
-        <GameGrid games={games} onSelectGame={handleSelectGame} onDeleteGame={handleDelete} />
+        <GameGrid games={games} onSelectGame={onSelectGame} onDeleteGame={handleDelete} />
       )}
     </main>
   );

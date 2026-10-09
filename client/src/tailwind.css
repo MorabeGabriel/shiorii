@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Tailwind lives in this file, separate from styles.css, so nothing already
-   defined there (including .demo-notice) is touched. */
-
 body {
   @apply bg-bg text-text;
   font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
